@@ -1,6 +1,7 @@
 
 # parent directory ignores:
 node_modules
+credentials
 
 
 # front directory ignores:

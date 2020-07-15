@@ -8,9 +8,9 @@ const app = express();
 app.use(bodyParser.json());
 app.use(cors());
 
-const posts = require('./routes/api/posts');
-
-app.use('/api/posts', posts);
+// rutes
+const posts = require('./routes/api/url_short');
+app.use('/api/url_short', posts);
 
 // Handle production
 if (process.env.NODE_ENV === 'production') {

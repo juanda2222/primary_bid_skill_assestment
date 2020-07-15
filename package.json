@@ -4,6 +4,7 @@
   "description": "Full stack vue and express app",
   "main": "index.js",
   "scripts": {
+    "test": "jest",
     "start": "node server/index.js",
     "dev": "nodemon server/index.js",
     "build": "cd front && yarn build",
@@ -20,7 +21,6 @@
   },
   "devDependencies": {
     "jest": "^26.1.0",
-    "nodemon": "^2.0.4",
-    "typescript": "^3.9.6"
+    "nodemon": "^2.0.4"
   }
 }
