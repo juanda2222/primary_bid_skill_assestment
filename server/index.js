@@ -9,8 +9,8 @@ app.use(bodyParser.json());
 app.use(cors());
 
 // rutes
-const posts = require('./routes/api/url_short');
-app.use('/api/url_short', posts);
+const posts = require('./routes/api/shortUrl');
+app.use('/api/shortUrl', posts);
 
 // Handle production
 if (process.env.NODE_ENV === 'production') {
