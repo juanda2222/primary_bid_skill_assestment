@@ -1,19 +1,27 @@
+
 const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 
+//custom modules:
+const ConfigureServer = require("./modules/ConfigureServer.js")
+
 const app = express();
+
+//configure the app:
+ConfigureServer.configureSecretFiles(app)
 
 // Middleware
 app.use(bodyParser.json());
 app.use(cors());
 
 // rutes
-const posts = require('./routes/api/shortUrl');
-app.use('/api/shortUrl', posts);
+const shortUrl = require('./routes/api/shortUrl');
+app.use('/api/shortUrl', shortUrl);
 
 // Handle production
 if (process.env.NODE_ENV === 'production') {
+  
   // Static folder
   app.use(express.static(__dirname + '/public/'));
 
