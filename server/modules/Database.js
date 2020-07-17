@@ -14,7 +14,7 @@ class Database {
         if (!password){ throw "Use a PASSWORD to connect to the database"}
         
         // use 2 databases to test data flow before production
-        if (process.env["PRODUCTION"] == "true"){
+        if (process.env.NODE_ENV === 'production'){
             const db_name = "personal_db"
             this._uri = `mongodb+srv://${user}:${password}@cluster0-qvs2p.gcp.mongodb.net/${db_name}?retryWrites=true&w=majority`;                
         
@@ -23,7 +23,6 @@ class Database {
             const db_name = "personal_db"
             this._uri = `mongodb+srv://${user}:${password}@cluster0-qvs2p.gcp.mongodb.net/${db_name}?retryWrites=true&w=majority`;                
         }
-        
         
         this.client = null
         this._db = null
