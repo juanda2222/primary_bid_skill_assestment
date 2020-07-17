@@ -1,13 +1,35 @@
 
 const fs = require("fs")
 const path = require("path")
-const UrlService = require("../../front/src/modules/UrlService.js");
-var childProcess = require('child_process');
+const axios = require("axios");
+//const UrlService = require("../../front/src/modules/UrlService.js");
 
-describe("Testing the server configuration 'on creation'", () => {
+describe("Testing the shortUrl api integration", () => {
 
-    test("This should download the secret file before fufilling the promise", async () => {
+    const url = "http://localhost:5000/api/shorturl"
+
+    test("This should get the url lists using http requests", async () => {
         
+        async function get_urls() {
+            return new Promise( async (resolve, reject) => {
+                try {
+                    const res = await axios.get(url)
+                    const data = res.data
+                    resolve(
+                        data.map((post_item) =>({
+                            ...post_item,
+                            createdAt: new Date(post_item.createdAt)
+                        }))
+                    )
+                } catch (error) {
+                    reject(error)
+                }
+            })
+        }
+        
+        const urls = await get_urls()
+        console.log(urls)
+        expect(urls.length).toBeGreaterThan(0)
     });
     
 });

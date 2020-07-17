@@ -1,7 +1,7 @@
 import axios from "axios"
 
 
-const url = "http://localhost:5000/api/url_short"
+const url = "http://localhost:5000/api/shorturl"
 
 class UrlService {
 
