@@ -6,9 +6,10 @@
   "scripts": {
     "test": "jest",
     "start": "node server/index.js",
-    "dev": "nodemon server/index.js",
+    "dev_back": "nodemon server/index.js",
     "build": "cd front && yarn build",
-    "dev_front": "cd front && yarn serve"
+    "dev_front": "cd front && yarn serve",
+    "dev":"yarn dev_back && yarn"
   },
   "author": "Juan David",
   "license": "MIT",
