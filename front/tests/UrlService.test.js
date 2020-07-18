@@ -1,4 +1,8 @@
 
+/**
+ * @jest-environment node
+ */
+
 const fs = require("fs")
 const path = require("path")
 const axios = require("axios");
@@ -11,7 +15,6 @@ describe("Testing the shortUrl api integration", () => {
     const module_path = path.normalize(__dirname+"../../front/src/modules/UrlService.js")
     const url = "http://localhost:5000/api/shorturl"
 
-    
     test("This should get the url lists using http requests", async () => {
         
         /*
