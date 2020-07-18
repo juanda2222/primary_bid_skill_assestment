@@ -16,7 +16,7 @@ describe("Testing the database manager", () => {
     test("This should connect correctly to the db", async () => {
         
         //config the test max timeout
-        jest.setTimeout(10000);
+        jest.setTimeout(20000);
 
         await database.connect()
         console.debug(">>>> Connected to the database")
@@ -30,7 +30,7 @@ describe("Testing the database manager", () => {
     test("Inserting a dumb url in the database", async () => {
         
         //config the test max timeout
-        jest.setTimeout(10000);
+        jest.setTimeout(20000);
 
         const userId = "dumb_userid_232dwd"
         const urlId = "dumb1234"
@@ -65,7 +65,7 @@ describe("Testing the database manager", () => {
     test("Delete the dumb url inserted in the database", async () => {
         
         //config the test max timeout
-        jest.setTimeout(10000);
+        jest.setTimeout(20000);
         let del_result = null
 
         try {
@@ -101,7 +101,7 @@ describe("Testing the database manager", () => {
     test("Get a set of records from the database", async () => {
         
         //config the test max timeout
-        jest.setTimeout(10000);
+        jest.setTimeout(20000);
 
         
         let doc_list = null

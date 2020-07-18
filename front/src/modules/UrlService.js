@@ -12,10 +12,10 @@ class UrlService {
                 const res = await axios.get(url)
                 const data = res.data
                 resolve(
-                    data.map((post_item)={
+                    data.map((post_item) => ({
                         ...post_item,
                         createdAt: new Date(post_item.createdAt)
-                    })
+                    }))
                 )
             } catch (error) {
                 reject(error)
@@ -28,4 +28,4 @@ class UrlService {
     // delete a url from id
 }
 
-module.exports = UrlService
+export default UrlService

@@ -2,7 +2,8 @@
 const mongodb = require('mongodb');
 const MongoClient = mongodb.MongoClient;
 
-
+// rehuse the client for every call of the package
+let client;
 const root_url = "https://pbid.io/"
 
 class Database {
@@ -18,33 +19,32 @@ class Database {
             const db_name = "personal_db"
             this._uri = `mongodb+srv://${user}:${password}@cluster0-qvs2p.gcp.mongodb.net/${db_name}?retryWrites=true&w=majority`;                
         
-        // use test credentials to connect to the test db
+        // use test credentials to connect to the test db  
         } else{
             const db_name = "personal_db"
             this._uri = `mongodb+srv://${user}:${password}@cluster0-qvs2p.gcp.mongodb.net/${db_name}?retryWrites=true&w=majority`;                
         }
         
-        this.client = null
-        this._db = null
 
     }
     isConnected(){
-        return this._db.serverConfig.isConnected()
+        if (!!client) {return client.db('personal_db').serverConfig.isConnected()}
+        else {return false}
     }
     async connect(){
 
-        this.client = new MongoClient(this._uri, { useUnifiedTopology: true } );
+        if (this.isConnected()){ return }
+
+        client = new MongoClient(this._uri, { useUnifiedTopology: true } );
 
         return new Promise((fulfill, reject) =>  {
 
             // this operation is safe to call various times
-            this.client.connect( (err) => {
+            client.connect( (err) => {
                 if(err) { 
                     console.log(`Error connecting mongodb: ${err}`)
                     reject(`Error connecting mongodb: ${err}`)
                 }else{
-                    this._db = this.client.db('personal_db')
-                    //this._urlCollection = this.client.db('personal_db').collection('urlShortened')
                     fulfill()
                 }
             });
@@ -52,12 +52,15 @@ class Database {
     }
 
     async close (){
+
+        if (!this.isConnected()){ return }
+
         // this operation is safe to call various times
-        await this.client.close();
+        await client.close();
     }
     
     async create_url_entry( userId, urlId, url ) {
-        if (!this.isConnected){ throw "Connect first to the database"}
+        if (!this.isConnected()){ throw "Connect first to the database"}
 
         // url prototype data
         var document = { 
@@ -68,24 +71,24 @@ class Database {
         };
 
         // insert one doc
-        const op_result = await this._db.collection('urlShortened').insertOne(document);
+        const op_result = await client.db('personal_db').collection('urlShortened').insertOne(document);
         return op_result
 
     }
 
     async delete_url_entry(doc_id) {
-        if (!this.isConnected){ throw "Connect first to the database"}
+        if (!this.isConnected()){ throw "Connect first to the database"}
         
         // del the doc
-        const op_result = await this._db.collection('urlShortened').deleteOne({ _id: new mongodb.ObjectID(doc_id) });
+        const op_result = await client.db('personal_db').collection('urlShortened').deleteOne({ _id: new mongodb.ObjectID(doc_id) });
         return op_result
     }
 
     async get_all_urls(maximumNumberOfResults) {
-        if (!this.isConnected){ throw "Connect first to the database"}
+        if (!this.isConnected()){ throw "Connect first to the database"}
         
         // get all the documents as an array:
-        const cursor = this._db.collection("urlShortened")
+        const cursor = client.db('personal_db').collection("urlShortened")
         .find({})
         .sort({ createdAt: -1 }) // sort by date
         .limit(maximumNumberOfResults);

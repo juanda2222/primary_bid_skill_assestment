@@ -14,7 +14,8 @@ router.get('/', async (req, res) => {
     req.session.user_id = uuidv4()
   }
   const database = await loadUrlDatabase(req.app.locals.secrets);
-  res.send(await database.get_all_urls(20));
+  const url_list = await database.get_all_urls(20)
+  res.send(url_list);
 
 });
 
