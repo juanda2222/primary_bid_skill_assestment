@@ -15,7 +15,11 @@ router.get('/', async (req, res) => {
   }
   const database = await loadUrlDatabase(req.app.locals.secrets);
   const url_list = await database.get_all_urls(20)
-  res.send(url_list);
+  const formatted_urls = url_list.map(( url_object )=>({
+    ...url_object,
+    short_url: `https://pbid.io/${url_object.urlId}`
+  }))
+  res.send(formatted_urls);
 
 });
 

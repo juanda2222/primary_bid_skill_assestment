@@ -4,7 +4,7 @@ const MongoClient = mongodb.MongoClient;
 
 // rehuse the client for every call of the package
 let client;
-const root_url = "https://pbid.io/"
+
 
 class Database {
 

@@ -1,17 +1,17 @@
 <template>
   <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <UrlList/>
+    <img class="personal_logo" alt="David logo" src="./assets/logo.png">
+    <UrlListContainer/>
   </div>
 </template>
-
 <script>
-import UrlList from './components/UrlList.vue'
+
+import UrlListContainer from './components/UrlListContainer.vue'
 
 export default {
   name: 'App',
   components: {
-    UrlList
+    UrlListContainer
   }
 }
 </script>
@@ -25,4 +25,5 @@ export default {
   color: #2c3e50;
   margin-top: 60px;
 }
+
 </style>
