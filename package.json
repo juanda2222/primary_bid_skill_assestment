@@ -9,7 +9,7 @@
     "dev_back": "nodemon server/index.js",
     "build": "cd front && yarn build",
     "dev_front": "cd front && yarn serve",
-    "dev":"yarn dev_back && yarn"
+    "dev":"./develop.bat"
   },
   "author": "Juan David",
   "license": "MIT",

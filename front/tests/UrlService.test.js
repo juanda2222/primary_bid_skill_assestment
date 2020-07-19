@@ -22,5 +22,13 @@ describe("Testing the shortUrl api integration", () => {
         expect(urls.length).toBeGreaterThan(0)
         
     });
+
+    test("This should insert and delete a entry using the api", async () => {
+        
+        const urls = await UrlService.getUrls()
+        console.log(urls)
+        expect(urls.length).toBeGreaterThan(0)
+        
+    });
     
 }); 

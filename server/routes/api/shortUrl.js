@@ -7,7 +7,7 @@ const Database = require("../../modules/Database.js")
 
 const router = express.Router();
 
-// Get Posts
+// Get URLs
 router.get('/', async (req, res) => {
 
   if (!req.session.user_id){
@@ -23,7 +23,7 @@ router.get('/', async (req, res) => {
 
 });
 
-// Add Post
+// Add URL
 router.post('/', async (req, res) => {
 
   if (!req.session.user_id){
@@ -42,7 +42,7 @@ router.post('/', async (req, res) => {
 
 });
 
-// Delete Post
+// Delete URL
 router.delete('/:id', async (req, res) => {
   
   if (!req.session.user_id){

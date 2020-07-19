@@ -1,6 +1,11 @@
 
 <template>
   <div class="posts-container">
+    <div class="create-url">
+      <label for="create-url">Create a url:</label>
+      <input type="text" id="create-url" v-model="new_url" placeholder="your url">
+      <button v-on:click="createUrl">Create url</button>
+    </div>
     <p class="error" v-if="error">{{error}}</p>
     <p class="text" v-if="isLoading"> {{`Loading...`}} </p>
     <div v-if="!isLoading">
@@ -27,6 +32,7 @@ export default {
   name: 'UrlListConponent',
   data(){
     return{
+      new_url:"",
       posts:[],
       error:"",
       text:"",
@@ -41,14 +47,23 @@ export default {
       this.error = error
     }
   },
+  methods:{
+    async createUrl(){
+      await UrlService.createNewUrl(this.new_url)
+      this.posts = await UrlService.getUrls()
+    }
+  },
   props: {
-    msg: String
   }
 }
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+
+div.create-url {
+  margin: 10px;
+}
 
 p.error { 
   border: 1px solid #ff5b5f; 
