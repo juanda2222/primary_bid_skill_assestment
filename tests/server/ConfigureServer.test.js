@@ -15,7 +15,7 @@ describe("Testing the server configuration 'on creation'", () => {
         const returnPromise = ConfigureServer.configureSecretFiles(mock_app)
      
         //check if the file was downloaded
-        const secrets_path = path.normalize(__dirname+"/../../credentials/secrets.json")
+        const secrets_path = path.resolve(__dirname+"/../../credentials/secrets.json")
         console.log(returnPromise) //pending
         await returnPromise // wait for the promise to resolve to read the file
         const file_readed =  JSON.parse(fs.readFileSync(secrets_path))

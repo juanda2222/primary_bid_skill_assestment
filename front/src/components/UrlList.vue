@@ -1,23 +1,25 @@
 
 <template>
-  <div class="posts-container">
+  <div>
     <div class="create-url">
       <label for="create-url">Create a url:</label>
       <input type="text" id="create-url" v-model="new_url" placeholder="your url">
       <button v-on:click="createUrl">Create url</button>
     </div>
+    <hr>
     <p class="error" v-if="error">{{error}}</p>
     <p class="text" v-if="isLoading"> {{`Loading...`}} </p>
     <div v-if="!isLoading">
-      <div class="post"
-        v-for="(post, index) in posts"
-        v-bind:item="post"
+      <div class="url"
+        v-for="(url_object, index) in url_list"
+        v-bind:item="url_object"
         v-bind:index="index"
-        v-bind:key="post._id"
+        v-bind:key="url_object._id"
+        v-on:dblclick="deleteUrl(url_object._id)"
       >
-        {{`${post.createdAt.getDate()}/${post.createdAt.getMonth()}/${post.createdAt.getFullYear()}`}}
-        <p class="text"> {{`Original url:`}} </p><a class="text"> {{post.url}} </a>
-        <p class="text"> {{`Shorted url:`}} </p><a class="text  "> {{post.short_url}} </a>
+        {{`${url_object.createdAt.getDate()}/${url_object.createdAt.getMonth()}/${url_object.createdAt.getFullYear()}`}}
+        <p class="text"> {{`Original url:`}} </p><a class="text"> {{url_object.url}} </a>
+        <p class="text"> {{`Shorted url:`}} </p><a class="text"> {{url_object.short_url}} </a>
       </div>
     </div>
   </div>
@@ -33,7 +35,7 @@ export default {
   data(){
     return{
       new_url:"",
-      posts:[],
+      url_list:[],
       error:"",
       text:"",
       isLoading:true,
@@ -41,7 +43,7 @@ export default {
   },
   async created(){
     try {
-      this.posts = await UrlService.getUrls()
+      this.url_list = await UrlService.getUrls()
       this.isLoading = false
     } catch (error) {
       this.error = error
@@ -50,7 +52,16 @@ export default {
   methods:{
     async createUrl(){
       await UrlService.createNewUrl(this.new_url)
-      this.posts = await UrlService.getUrls()
+      this.url_list = await UrlService.getUrls()
+    },
+    async deleteUrl(mongo_id){
+      try {
+        await UrlService.deleteUrl(mongo_id)
+        this.url_list = await UrlService.getUrls()
+      } catch (error) {
+        this.error = error
+      }
+      
     }
   },
   props: {
@@ -64,6 +75,9 @@ export default {
 div.create-url {
   margin: 10px;
 }
+input.create-url {
+  min-width: 100px;
+}
 
 p.error { 
   border: 1px solid #ff5b5f; 
@@ -72,7 +86,7 @@ p.error {
   margin-bottom: 15px; 
   }
 
-div.post { 
+div.url { 
   position: relative; 
   border: 1px solid #5bd658;
   background-color: #b0e9b7; 

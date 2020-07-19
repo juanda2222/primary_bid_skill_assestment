@@ -15,7 +15,7 @@ let s3 = new AWS.S3({ apiVersion: '2006-03-01' });
 class AwsAdmin {
 
     static async config_project() {
-        AWS.config.loadFromPath(path.normalize(__dirname + "/../../credentials/aws_config.json"));
+        AWS.config.loadFromPath(path.resolve(__dirname + "/../../credentials/aws_config.json"));
         return true
     }
 

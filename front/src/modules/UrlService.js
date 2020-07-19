@@ -1,7 +1,7 @@
 import axios from "axios"
 
 
-const server_url = "http://localhost:5000/api/shorturl/"
+const server_url = "    api/shorturl/"
 
 class UrlService {
 
@@ -23,12 +23,14 @@ class UrlService {
         const data = {
             url:url
         }
-        await axios.post(server_url, data)
+        const created_entry = await axios.post(server_url, data)
+        return created_entry
     }
 
     // delete a url from id
-    static deleteNewUrl = async (url_doc_id) => {
-        await axios.delete(`${server_url}${url_doc_id}`)
+    static deleteUrl = async (url_doc_id) => {
+        const res = await axios.delete(`${server_url}${url_doc_id }`)
+        return res
     }
 }
 

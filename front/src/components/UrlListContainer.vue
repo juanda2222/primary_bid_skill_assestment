@@ -1,7 +1,7 @@
 <template>
   <div class="container" >
     <h1>Your url's</h1>
-    <hr>
+    
     <UrlList/>
   </div>
 </template>

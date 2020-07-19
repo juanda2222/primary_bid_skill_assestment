@@ -8,7 +8,7 @@ class ConfigureServer {
 
     static async configureSecretFiles(app){
         
-        let secrets_file_path = path.normalize(__dirname + "/../../credentials/secrets.json")
+        let secrets_file_path = path.resolve(__dirname + "/../../credentials/secrets.json")
         let serialized_file
 
         // only download and write to disk if the file does not exists

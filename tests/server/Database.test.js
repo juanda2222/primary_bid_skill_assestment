@@ -7,7 +7,7 @@ const { json } = require("body-parser");
 describe("Testing the database manager", () => {
 
     // get the secret data
-    const secrets_path = path.normalize(__dirname+"/../../credentials/secrets.json")
+    const secrets_path = path.resolve(__dirname+"/../../credentials/secrets.json")
     const secrets = JSON.parse(fs.readFileSync(secrets_path))
 
     // initialize the manager and helper shared vars

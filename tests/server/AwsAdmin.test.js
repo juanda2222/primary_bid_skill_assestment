@@ -76,7 +76,7 @@ describe("Testing the AwsAdmin module", () => {
 
         // save a known file from command line
         let test_object = {test_property:"test_value"};
-        let test_file_path = path.normalize(__dirname+"/test_file_to_upload.json")
+        let test_file_path = path.resolve(__dirname+"/test_file_to_upload.json")
         let serialized_file = JSON.stringify(test_object)
         fs.writeFileSync(test_file_path, serialized_file)
         let downloaded_file = null
