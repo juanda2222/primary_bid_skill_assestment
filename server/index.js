@@ -33,7 +33,7 @@ app.use(session(sesion_config))
 app.use(bodyParser.json());
 app.use(cors(CorsConfig));
 
-
+process.env.NODE_ENV = 'production'
 
 // Handle production
 if (process.env.NODE_ENV === 'production') {
@@ -55,10 +55,16 @@ app.use(function (req, res, next) {
   if (!req.session) {
     return next(new Error('oh no')) // handle error
   }
-  const { url } = req;
-  const isCookieSent = req.headers.cookie;
-  console.log({ url });
-  console.log({ isCookieSent });
+
+  // initialize user if not available
+  if (!req.session.user_id){
+    req.session.user_id = uuidv4()
+    console.debug("New user in the town!: ", req.session.user_id)
+  }
+
+  console.debug("Session id:", req.session.id)
+  console.debug({ url });
+  console.debug({ isCookieSent });
   next() // otherwise continue
 })
 

@@ -14,10 +14,10 @@ module.exports = {
         if(!origin) return callback(null, true);
 
         if (allowedOrigins.indexOf(origin) !== -1 || !origin) {
-        callback(null, true)
+            callback(null, true)
         } else {
-        callback(new Error('The CORS policy for this site does not ' +
-        'allow access from the specified Origin.'))
+            callback(new Error('The CORS policy for this site does not ' +
+            'allow access from the specified Origin.'))
         }
     }
 }

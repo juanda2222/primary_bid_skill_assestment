@@ -4,6 +4,7 @@ const path = require("path")
 const AwsAdmin = require("../../server/modules/AwsAdmin.js");
 
 
+
 describe("Testing the AwsAdmin module", () => {
     test("Testing configuring the project with the credentials", async () => {
         
@@ -107,4 +108,5 @@ describe("Testing the AwsAdmin module", () => {
         // pending ...
         
     });
+
 });
