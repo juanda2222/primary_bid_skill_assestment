@@ -3,12 +3,18 @@
 > Example of a fullstack app using Vue.js, Express and MongoDB. You will need to edit the MongoDB connection string in server/routes/api/posts.js to your own.
 
 > Create a Kubernetes cluster from aws console: https://docs.aws.amazon.com/eks/latest/userguide/getting-started-console.html
-https://docs.aws.amazon.com/eks/latest/userguide/create-cluster.html
+
 
 
 ## Quick Start
 
 ```bash
+# install aws client
+
+# Install kubectl command line tool
+
+# install docker
+
 # Install dependencies
 npm install
 

@@ -23,10 +23,9 @@ const NETWORK_INFO = {
 //-----------------------------------------------------------------------------------
 const EKS_CLUSTER_ROLE_ARN = `arn:aws:iam::282592278669:role/eks-iam-stack-eksClusterRole-1MEG66RVL8WUZ`
 
-
-const util = require('util');
 const path = require("path")
 const fs = require("fs")
+const util = require('util');
 const exec = util.promisify(require('child_process').exec);
 
 //constants
