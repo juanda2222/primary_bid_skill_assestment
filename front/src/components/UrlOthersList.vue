@@ -1,15 +1,9 @@
 
 <template>
   <div>
-    <div class="create-url">
-      <label for="create-url">Create a short url:</label>
-      <input type="text" id="create-url" v-model="new_url" placeholder="your url">
-      <button v-on:click="createUrl">Create url</button>
-    </div>
-    <hr>
     <p class="error" v-if="error">{{error}}</p>
-    <p class="text" v-if="isLoading"> {{`Loading...`}} </p>
-    <div v-if="!isLoading">
+    <p class="text" v-if="!url_list"> {{`Loading...`}} </p>
+    <div v-if="url_list">
       <div class="url" 
         v-for="(url_object, index) in url_list"
         @mouseover="hover_id = url_object._id"
@@ -34,41 +28,22 @@
 import UrlService from "../modules/UrlService.js"
 
 export default {
-  name: 'UrlListConponent',
+  name: 'UrlOthersList',
+  props: ['url_list','error'],
   data(){
     return{
       hover_id:"",
-      new_url:"",
-      url_list:[],
-      error:"",
-      text:"",
-      isLoading:true,
-    }
-  },
-  async created(){
-    try {
-      this.url_list = await UrlService.getUrls()
-      this.isLoading = false
-    } catch (error) {
-      this.error = error
     }
   },
   methods:{
-    async createUrl(){
-      await UrlService.createNewUrl(this.new_url)
-      this.url_list = await UrlService.getUrls()
-    },
     async deleteUrl(mongo_id){
       try {
         await UrlService.deleteUrl(mongo_id)
-        this.url_list = await UrlService.getUrls()
+        this.$emit('update_urls')
       } catch (error) {
-        this.error = error
+        this.$emit('update_error', error);
       }
-      
     }
-  },
-  props: {
   }
 }
 </script>
@@ -92,14 +67,14 @@ p.error {
 
 div.url { 
   position: relative; 
-  border: 1px solid #5bd658;
-  background-color: #b0e9b7; 
+  border: 1px solid #94c9d3;
+  background-color: #bae2e9; 
   padding: 10px 10px 30px 10px; 
   margin-bottom: 15px; 
   }
 div.url:hover {
-  border: 1px solid #4ebb4d;
-  background-color: #93c999; 
+  border: 1px solid #8ebfc9;
+  background-color: #afd3da; 
   }
 
 div.created-at { 

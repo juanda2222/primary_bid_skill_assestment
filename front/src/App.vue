@@ -1,17 +1,17 @@
 <template>
   <div id="app">
     <img class="personal_logo" alt="David logo" src="./assets/logo.png">
-    <UrlListContainer/>
+    <UrlGridContainer/>
   </div>
 </template>
 <script>
 
-import UrlListContainer from './components/UrlListContainer.vue'
+import UrlGridContainer from './components/UrlGridContainer.vue'
 
 export default {
   name: 'App',
   components: {
-    UrlListContainer
+    UrlGridContainer
   }
 }
 </script>

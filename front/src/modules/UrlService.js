@@ -16,12 +16,14 @@ class UrlService {
             }}
         )
 
-        const data = res.data
-        return data.map((post_item) => ({
-            ...post_item,
-            createdAt: new Date(post_item.createdAt)
-        }))
-    
+        const data = {
+            ...res.data,
+            UrlList: res.data.UrlList.map((post_item) => ({
+                ...post_item,
+                createdAt: new Date(post_item.createdAt)
+            }))
+        }
+        return data
     }
 
     // get the list of urls from the database

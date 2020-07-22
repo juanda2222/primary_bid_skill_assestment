@@ -29,7 +29,14 @@ router.get('/', async (req, res) => {
     ...url_object,
     short_url: `https://pbid.io/${url_object.urlId}`
   }))
-  res.send(formatted_urls);
+
+  const response = {
+    UserId: req.session.user_id,
+    Timestamp: Date.now(),
+    UrlList:formatted_urls,
+  }
+  console.debug(response)
+  res.send(response);
 
 });
 

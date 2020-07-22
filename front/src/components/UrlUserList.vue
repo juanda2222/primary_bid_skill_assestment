@@ -2,14 +2,13 @@
 <template>
   <div>
     <div class="create-url">
-      <label for="create-url">Create a short url:</label>
-      <input type="text" id="create-url" v-model="new_url" placeholder="your url">
-      <button v-on:click="createUrl">Create url</button>
+      <label for="create-url">Insert your own url:</label>
+      <input type="text" id="create-url" v-model="new_url" placeholder="long url">
+      <button v-on:click="createUrl">Create short version</button>
     </div>
-    <hr>
     <p class="error" v-if="error">{{error}}</p>
-    <p class="text" v-if="isLoading"> {{`Loading...`}} </p>
-    <div v-if="!isLoading">
+    <p class="text" v-if="!url_list"> {{`Loading...`}} </p>
+    <div v-if="url_list">
       <div class="url" 
         v-for="(url_object, index) in url_list"
         @mouseover="hover_id = url_object._id"
@@ -22,7 +21,7 @@
         {{`${url_object.createdAt.getDate()}/${url_object.createdAt.getMonth()}/${url_object.createdAt.getFullYear()}`}}
         <p class="text"> {{`Original url:`}} </p><a class="text" v-bind:href="url_object.url"> {{url_object.url}} </a>
         <p class="text"> {{`Shorted url:`}} </p><a class="text" v-bind:href="url_object.url"> {{url_object.short_url}} </a>
-        <p class="text" v-if="(hover_id===url_object._id)">DOUBLE CLICK TO DELETE</p>
+        <p class="text" v-if="(hover_id===url_object._id)">CLICK HERE TO DELETE</p>
       </div>
     </div>
   </div>
@@ -34,41 +33,29 @@
 import UrlService from "../modules/UrlService.js"
 
 export default {
-  name: 'UrlListConponent',
+  name: 'UrlUserList',
+  props: ['url_list', 'error'],
   data(){
     return{
       hover_id:"",
       new_url:"",
-      url_list:[],
-      error:"",
-      text:"",
-      isLoading:true,
     }
   },
-  async created(){
-    try {
-      this.url_list = await UrlService.getUrls()
-      this.isLoading = false
-    } catch (error) {
-      this.error = error
-    }
-  },
+  
   methods:{
     async createUrl(){
       await UrlService.createNewUrl(this.new_url)
-      this.url_list = await UrlService.getUrls()
+      this.$emit('update_urls')
     },
     async deleteUrl(mongo_id){
       try {
         await UrlService.deleteUrl(mongo_id)
-        this.url_list = await UrlService.getUrls()
+        this.$emit('update_urls')
       } catch (error) {
-        this.error = error
+        this.$emit('update_error', error)
       }
       
     }
-  },
-  props: {
   }
 }
 </script>

@@ -33,6 +33,24 @@ app.use(session(sesion_config))
 app.use(express.json());
 app.use(cors(CorsConfig));
 
+//on any request:
+app.use(function (req, res, next) {
+  if (!req.session) {
+    return next(new Error('oh no')) // handle error
+  }
+
+  // initialize user if not available
+  if (!req.session.user_id){
+    req.session.user_id = uuidv4()
+    console.debug("New user in the town!: ", req.session.user_id)
+  }
+
+  var { url } = req
+  console.debug("Session id:", req.session.id)
+  console.debug({ url });
+  next() // otherwise continue
+})
+
 // rutes
 app.use('/api/shorturl', ShortUrl);
 
@@ -53,24 +71,6 @@ if ((process.env.NODE_ENV === 'production') || (process.env.NODE_ENV === 'test_p
   app.get(/.*/, (req, res) => res.sendFile(__dirname + '/public/index.html'));
 
 }
-
-//on any request:
-app.use(function (req, res, next) {
-  if (!req.session) {
-    return next(new Error('oh no')) // handle error
-  }
-
-  // initialize user if not available
-  if (!req.session.user_id){
-    req.session.user_id = uuidv4()
-    console.debug("New user in the town!: ", req.session.user_id)
-  }
-
-  var { url } = req
-  console.debug("Session id:", req.session.id)
-  console.debug({ url });
-  next() // otherwise continue
-})
 
 
 //start server
