@@ -36,11 +36,10 @@ app.use(cors(CorsConfig));
 // rutes
 app.use('/api/shorturl', ShortUrl);
 
-
-process.env.NODE_ENV = 'production'
+//process.env.NODE_ENV === 'test_production'
 
 // Handle production
-if (process.env.NODE_ENV === 'production') {
+if ((process.env.NODE_ENV === 'production') || (process.env.NODE_ENV === 'test_production')){
 
   console.log("Production env detected")
 

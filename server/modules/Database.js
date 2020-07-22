@@ -96,6 +96,17 @@ class Database {
         return await cursor.toArray();
     }
 
+    async get_urls_by_user_id(user_id, maximumNumberOfResults) {
+
+        // get all the documents as an array:
+        const cursor = client.db('personal_db').collection("urlShortened")
+        .find({userId:user_id})
+        .sort({ createdAt: -1 }) // sort by date
+        .limit(maximumNumberOfResults);
+
+        return await cursor.toArray();
+    }
+
 
 }
 

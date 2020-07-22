@@ -13,6 +13,7 @@ describe("Testing the database manager", () => {
     // initialize the manager and helper shared vars
     const database = new Database(secrets.db_user, secrets.db_password)
      
+    
     test("This should connect correctly to the db", async () => {
         
         //config the test max timeout
@@ -124,7 +125,38 @@ describe("Testing the database manager", () => {
         }       
 
         expect(doc_list.length).toBeLessThanOrEqual(maximumNumberOfResults)
-        expect(doc_list.length).toBeGreaterThan(1)
+        expect(doc_list.length).toBeGreaterThan(0)
+        
+    });
+    
+
+    test("Get a set of records from the database using a userId", async () => {
+        
+        //config the test max timeout
+        jest.setTimeout(20000);
+
+        
+        let doc_list = null
+        const maximumNumberOfResults = 10
+
+        try {
+            
+            await database.connect()
+            console.debug(">>>> Connected to the database")
+            doc_list = await database.get_urls_by_user_id("dumb_userid_232dwd", maximumNumberOfResults) 
+            console.debug(">>>> Result list:", doc_list)
+
+        } catch (error) {
+
+            console.debug(`--- Error getting the documents`, error)
+
+        }finally{
+            await database.close()
+            console.debug(">>>> Database closed")
+        }       
+
+        expect(doc_list.length).toBeLessThanOrEqual(maximumNumberOfResults)
+        expect(doc_list.length).toBeGreaterThan(0)
         
     });
 });

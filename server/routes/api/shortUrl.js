@@ -10,9 +10,21 @@ const router = express.Router();
 
 // Get URLs
 router.get('/', async (req, res) => {
-
+  
+  let url_list
+  let byUser = req.query.byUser;
   const database = await loadUrlDatabase(req.app.locals.secrets);
-  const url_list = await database.get_all_urls(20)
+
+  //query by user:
+  if (byUser==="true"){
+    url_list = await database.get_urls_by_user_id(req.session.user_id, 20)
+
+  // full query
+  } else {
+    url_list = await database.get_all_urls(20)
+  }
+
+  //format the url:
   const formatted_urls = url_list.map(( url_object )=>({
     ...url_object,
     short_url: `https://pbid.io/${url_object.urlId}`

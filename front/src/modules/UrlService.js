@@ -15,6 +15,25 @@ class UrlService {
                 'Content-Type': 'application/json' 
             }}
         )
+
+        const data = res.data
+        return data.map((post_item) => ({
+            ...post_item,
+            createdAt: new Date(post_item.createdAt)
+        }))
+    
+    }
+
+    // get the list of urls from the database
+    static getUserUrls = async () => {
+        
+        const res = await axios.get(
+            `${server_url}?byUser=true`, 
+            {headers: {
+                'Accept': 'application/json', 
+                'Content-Type': 'application/json' 
+            }}
+        )
         
         const data = res.data
         return data.map((post_item) => ({
