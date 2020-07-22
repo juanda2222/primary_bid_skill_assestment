@@ -1,6 +1,5 @@
 <template>
   <div id="app">
-    <img class="personal_logo" alt="David logo" src="./assets/logo.png">
     <UrlGridContainer/>
   </div>
 </template>

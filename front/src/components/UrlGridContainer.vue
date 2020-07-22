@@ -1,6 +1,7 @@
 <template>
   <div class="container" >
     <div class="user-urls">
+      <img class="personal_logo" alt="David logo" src="../assets/logo.png">
       <h1>Your urls</h1>
       <hr>
       <UrlUserList 
@@ -95,13 +96,26 @@ export default {
 <style scoped>
 
 div.container { 
-  
-  }  
+  display:grid;
+  grid-template-columns: 2fr 1fr;
+  grid-template-rows: auto;
+  grid-column-gap: 20px;
+}
+
+@media only screen and (max-width: 1200px) {
+  div.container {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto auto
+  }
+}
+
 div.user-urls{
+  width: 100%;
   max-width: 900px; 
   margin: 0 auto; 
 }
 div.all-urls{
+  width: 100%;
   max-width: 900px; 
   margin: 0 auto; 
 }

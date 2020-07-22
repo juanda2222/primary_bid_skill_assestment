@@ -17,11 +17,14 @@
         v-bind:index="index"
         v-bind:key="url_object._id"
         v-on:dblclick="deleteUrl(url_object._id)"
+        @click="clicked_id=url_object._id"
       >
         {{`${url_object.createdAt.getDate()}/${url_object.createdAt.getMonth()}/${url_object.createdAt.getFullYear()}`}}
         <p class="text"> {{`Original url:`}} </p><a class="text" v-bind:href="url_object.url"> {{url_object.url}} </a>
         <p class="text"> {{`Shorted url:`}} </p><a class="text" v-bind:href="url_object.url"> {{url_object.short_url}} </a>
-        <p class="text" v-if="(hover_id===url_object._id)">CLICK HERE TO DELETE</p>
+        <p class="text" v-if="(clicked_id===url_object._id)">Database Object:</p>
+        <p v-if="(clicked_id===url_object._id)"> {{url_object}} </p>
+        <p class="text" v-if="(hover_id===url_object._id)">Doble click to delete</p>
       </div>
     </div>
   </div>
@@ -38,6 +41,7 @@ export default {
   data(){
     return{
       hover_id:"",
+      clicked_id:"",
       new_url:"",
     }
   },
@@ -45,6 +49,7 @@ export default {
   methods:{
     async createUrl(){
       await UrlService.createNewUrl(this.new_url)
+      this.new_url = ""
       this.$emit('update_urls')
     },
     async deleteUrl(mongo_id){
@@ -64,10 +69,13 @@ export default {
 <style scoped>
 
 div.create-url {
-  margin: 6px;
+  margin-top: 5px; 
+  margin-bottom: 5px; 
+  margin: 0 auto; 
 }
 div.create-url > *{
   margin: 4px;
+  margin-bottom: 10px;
 }
 
 p.error { 

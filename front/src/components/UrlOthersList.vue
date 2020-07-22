@@ -12,11 +12,14 @@
         v-bind:index="index"
         v-bind:key="url_object._id"
         v-on:dblclick="deleteUrl(url_object._id)"
+        @click="clicked_id=url_object._id"
       >
         {{`${url_object.createdAt.getDate()}/${url_object.createdAt.getMonth()}/${url_object.createdAt.getFullYear()}`}}
         <p class="text"> {{`Original url:`}} </p><a class="text" v-bind:href="url_object.url"> {{url_object.url}} </a>
         <p class="text"> {{`Shorted url:`}} </p><a class="text" v-bind:href="url_object.url"> {{url_object.short_url}} </a>
-        <p class="text" v-if="(hover_id===url_object._id)">DOUBLE CLICK TO DELETE</p>
+        <p class="text" v-if="(clicked_id===url_object._id)">Database Object:</p>
+        <p v-if="(clicked_id===url_object._id)"> {{url_object}} </p>
+        <p class="text" v-if="(hover_id===url_object._id)">Doble click to delete</p>
       </div>
     </div>
   </div>
@@ -32,6 +35,7 @@ export default {
   props: ['url_list','error'],
   data(){
     return{
+      clicked_id:"",
       hover_id:"",
     }
   },
@@ -51,12 +55,6 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
 
-div.create-url {
-  margin: 6px;
-}
-div.create-url > *{
-  margin: 4px;
-}
 
 p.error { 
   border: 1px solid #ff5b5f; 
