@@ -30,8 +30,12 @@ var sesion_config = {
   } 
 }
 app.use(session(sesion_config))
-app.use(bodyParser.json());
+app.use(express.json());
 app.use(cors(CorsConfig));
+
+// rutes
+app.use('/api/shorturl', ShortUrl);
+
 
 process.env.NODE_ENV = 'production'
 
@@ -51,6 +55,7 @@ if (process.env.NODE_ENV === 'production') {
 
 }
 
+//on any request:
 app.use(function (req, res, next) {
   if (!req.session) {
     return next(new Error('oh no')) // handle error
@@ -62,15 +67,12 @@ app.use(function (req, res, next) {
     console.debug("New user in the town!: ", req.session.user_id)
   }
 
+  var { url } = req
   console.debug("Session id:", req.session.id)
   console.debug({ url });
-  console.debug({ isCookieSent });
   next() // otherwise continue
 })
 
-
-// rutes
-app.use('/api/shorturl', ShortUrl);
 
 //start server
 const port = process.env.PORT || 5000;

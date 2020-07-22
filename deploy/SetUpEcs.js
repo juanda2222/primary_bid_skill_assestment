@@ -51,7 +51,7 @@ class SetUpEks {
         
     }
 
-    static async create_kubernetes_vpn() {
+    static async create_ecs_stack() {
 
         // --------------
         // the VPN stack

@@ -1,16 +1,22 @@
 import axios from "axios"
 
 
-const server_url = "    api/shorturl/"
+const server_url = "api/shorturl/"
 
 class UrlService {
 
     // get the list of urls from the database
     static getUrls = async () => {
         
-        const res = await axios.get(server_url)
-        const data = res.data
+        const res = await axios.get(
+            server_url, 
+            {headers: {
+                'Accept': 'application/json', 
+                'Content-Type': 'application/json' 
+            }}
+        )
         
+        const data = res.data
         return data.map((post_item) => ({
             ...post_item,
             createdAt: new Date(post_item.createdAt)
@@ -23,7 +29,14 @@ class UrlService {
         const data = {
             url:url
         }
-        const created_entry = await axios.post(server_url, data)
+        const created_entry = await axios.post(
+            server_url, 
+            data, 
+            {headers: {
+                'Accept': 'application/json', 
+                'Content-Type': 'application/json' 
+            }}
+        )
         return created_entry
     }
 

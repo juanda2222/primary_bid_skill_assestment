@@ -2,7 +2,7 @@
 <template>
   <div>
     <div class="create-url">
-      <label for="create-url">Create a url:</label>
+      <label for="create-url">Create a short url:</label>
       <input type="text" id="create-url" v-model="new_url" placeholder="your url">
       <button v-on:click="createUrl">Create url</button>
     </div>
@@ -18,8 +18,8 @@
         v-on:dblclick="deleteUrl(url_object._id)"
       >
         {{`${url_object.createdAt.getDate()}/${url_object.createdAt.getMonth()}/${url_object.createdAt.getFullYear()}`}}
-        <p class="text"> {{`Original url:`}} </p><a class="text"> {{url_object.url}} </a>
-        <p class="text"> {{`Shorted url:`}} </p><a class="text"> {{url_object.short_url}} </a>
+        <p class="text"> {{`Original url:`}} </p><a class="text" v-bind:href="url_object.url"> {{url_object.url}} </a>
+        <p class="text"> {{`Shorted url:`}} </p><a class="text" v-bind:href="url_object.url"> {{url_object.short_url}} </a>
       </div>
     </div>
   </div>

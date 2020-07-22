@@ -1,9 +1,7 @@
 
 //constants
 const REGION = 'us-east-1'
-const EKS_CLUSTER_NODE_STACK = "https://amazon-eks.s3.us-west-2.amazonaws.com/cloudformation/2020-06-10/amazon-eks-nodegroup-role.yaml"
-const EKS_NAME = "personal-eks-cluster" 
-const APP_NAME = "url-shortener"
+const NAMESPACE_NAME = "url-shortener-namespace"
 
 var AWS = require('aws-sdk');
 const util = require('util');
@@ -18,19 +16,21 @@ var cloudformation = new AWS.CloudFormation({ apiVersion: '2010-05-15' });
 
 class CreateApp {
 
-    static async create_namespace() {
+    static async deploy_image() {
 
         // create the name entry for the app
-        const command = `kubectl create namespace ${APP_NAME}`
+        const command = `kubectl apply -f ../url_service.yaml`
         const { stdout, stderr } = await exec(command);
         console.log('stdout:', stdout);
         console.error('stderr:', stderr);
     }
+    
 }
 
 //if the module is main execute the example
 if (module === require.main) {
     CreateApp.create_namespace()
+    CreateApp.deploy_image()
 
 }
 

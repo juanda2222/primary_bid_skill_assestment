@@ -7,7 +7,7 @@ WORKDIR /usr/src/app
 
 # set up the enviroment vars:
 ENV PRODUCTION=true
-ENV PORT=8080
+ENV PORT=80
 
 # Copy application dependency manifests to the container image.
 # A wildcard is used to ensure both package.json AND package-lock.json are copied.

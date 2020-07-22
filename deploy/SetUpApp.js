@@ -1,16 +1,14 @@
 
 //constants
 const REGION = 'us-east-1'
-const EKS_CLUSTER_NODE_STACK = "https://amazon-eks.s3.us-west-2.amazonaws.com/cloudformation/2020-06-10/amazon-eks-nodegroup-role.yaml"
-const EKS_NAME = "personal-eks-cluster" 
-const APP_NAME = "url-shortener"
 const CLUSTER_REPOSITORY_NAME = "eks-image-repository"
 
 var AWS = require('aws-sdk');
 const path = require("path")
 const fs = require("fs")
 const util = require('util');
-const exec = util.promisify(require('child_process').exec);
+const { spawn, exec } = require('child_process');
+const promise_exec = util.promisify(exec);
 
 // Set the region
 AWS.config.update({ region: REGION });
@@ -30,7 +28,7 @@ class SetUpApp {
         --repository-name ${CLUSTER_REPOSITORY_NAME}\
         `
 
-        const { stdout, stderr } = await exec(command);
+        const { stdout, stderr } = await promise_exec(command);
         console.log('stdout:', stdout);
         console.error('stderr:', stderr);
     }
@@ -42,7 +40,7 @@ class SetUpApp {
 
         const command = `docker login --username AWS --password-stdin ${secrets.user_id}.dkr.ecr.${REGION}.amazonaws.com`
 
-        const { stdout, stderr } = await exec(command);
+        const { stdout, stderr } = await promise_exec(command);
         console.log('stdout:', stdout);
         console.error('stderr:', stderr);
     }
@@ -53,18 +51,50 @@ class SetUpApp {
         let secrets_file_path = path.resolve(__dirname + "/../credentials/secrets.json")
         let secrets = JSON.parse(fs.readFileSync(secrets_file_path))
 
-        var command = `docker build -t ${CLUSTER_REPOSITORY_NAME} ..`
+        var command = (`docker build -t ${CLUSTER_REPOSITORY_NAME} ..`).split(" ")
+        const child = spawn(command[0], command.slice(1, command.length));
 
-        var { stdout, stderr } = await exec(command);
-        console.log('stdout:', stdout);
-        console.error('stderr:', stderr);
+        // this is a time expensive command so we use this format to print the progress
+        await new Promise((fulfill, reject) => {
+            child.stdout.on('data', (data) => {
+                console.log(`child stdout:\n${data}`);
+            });
+            
+            child.stderr.on('data', (data) => {
+                console.error(`child stderr:\n${data}`);
+                reject(data)
+            });
+
+            child.on('exit', function (code, signal) {
+                console.log('child process exited with ' +
+                            `code ${code} and signal ${signal}`);
+                fulfill(code)
+            });
+        })
+        
+
 
         //Tag the compiled dockerfile
-        var command = `docker tag eks-image-repository:latest ${secrets.user_id}.dkr.ecr.${REGION}.amazonaws.com/${CLUSTER_REPOSITORY_NAME}:latest`
+        var command = (`docker tag eks-image-repository:latest ${secrets.user_id}.dkr.ecr.${REGION}.amazonaws.com/${CLUSTER_REPOSITORY_NAME}:latest`).split(" ")
+        const child = spawn(command[0], command.slice(1, command.length));
 
-        var { stdout, stderr } = await exec(command);
-        console.log('stdout:', stdout);
-        console.error('stderr:', stderr);
+        // this one is time exprensive too
+        await new Promise((fulfill, reject) => {
+            child.stdout.on('data', (data) => {
+                console.log(`child stdout:\n${data}`);
+            });
+            
+            child.stderr.on('data', (data) => {
+                console.error(`child stderr:\n${data}`);
+                reject(data)
+            });
+
+            child.on('exit', function (code, signal) {
+                console.log('child process exited with ' +
+                            `code ${code} and signal ${signal}`);
+                fulfill(code)
+            });
+        })
     }
 
 
@@ -75,15 +105,11 @@ class SetUpApp {
 
         //push the file to the repository:
         const command = `docker push ${secrets.user_id}.dkr.ecr.${REGION}.amazonaws.com/${CLUSTER_REPOSITORY_NAME}:latest`
-        const { stdout, stderr } = await exec(command);
+        const { stdout, stderr } = await promise_exec(command);
 
         console.log('stdout:', stdout);
         console.error('stderr:', stderr);
     }
-    
-    docker push 282592278669.dkr.ecr.us-east-1.amazonaws.com/eks-image-repository:latest
-    
-
     
     
 }
@@ -92,8 +118,8 @@ class SetUpApp {
 if (module === require.main) {
     //SetUpApp.create_eks_docker_repository()
     //SetUpApp.save_ecr_credentials_for_docker()
-    //SetUpApp.build_image()
-    SetUpApp.push_image()
+    SetUpApp.build_image()
+    //SetUpApp.push_image()
 
 
 }

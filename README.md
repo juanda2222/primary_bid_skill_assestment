@@ -4,7 +4,7 @@
 
 > Create a Kubernetes cluster from aws console: https://docs.aws.amazon.com/eks/latest/userguide/getting-started-console.html
 
-
+https://www.youtube.com/watch?v=fmFlAWtKnGA
 
 ## Quick Start
 
