@@ -1,14 +1,27 @@
 
-const mongodb = require('mongodb');
-const MongoClient = mongodb.MongoClient;
+import { Client } from "../types/MongoTypes"
 
+var mongodb = require('mongodb');
+var MongoClient = mongodb.MongoClient;
+
+  
 // rehuse the client for every call of the package
-let client;
+var client:Client;
 
+interface UrlDbObject {
+    _id: string,
+    urlId ?: string,
+    url ?: string,
+    userId ?: string,
+    createdAt ?: Date,
+    short_url ?: string
+}
 
 class Database {
 
-    constructor(user, password){
+    _uri: string
+    
+    constructor(user: string, password: string) {
 
         // check for credentials (always needed)
         if (!user){ throw "Use a USER to connect ot the db"}
@@ -40,7 +53,7 @@ class Database {
         return new Promise((fulfill, reject) =>  {
 
             // this operation is safe to call various times
-            client.connect( (err) => {
+            client.connect( (err:string) => {
                 if(err) { 
                     console.log(`Error connecting mongodb: ${err}`)
                     reject(`Error connecting mongodb: ${err}`)
@@ -51,7 +64,7 @@ class Database {
         })
     }
 
-    async close (){
+    async close(): Promise<void> {
 
         if (!this.isConnected()){ return }
 
@@ -59,8 +72,8 @@ class Database {
         await client.close();
     }
     
-    async create_url_entry( userId, urlId, url ) {
-        if (!this.isConnected()){ throw "Connect first to the database"}
+    async create_url_entry( userId:string, urlId:string, url:string ):  Promise<{ops:UrlDbObject[]}>{
+        if (!this.isConnected()) { throw "Connect first to the database" }
 
         // url prototype data
         var document = { 
@@ -76,7 +89,7 @@ class Database {
 
     }
 
-    async delete_url_entry(doc_id) {
+    async delete_url_entry(doc_id: string): Promise<{deletedCount:number}>{
         if (!this.isConnected()){ throw "Connect first to the database"}
         
         // del the doc
@@ -84,7 +97,7 @@ class Database {
         return op_result
     }
 
-    async get_all_urls(maximumNumberOfResults) {
+    async get_all_urls(maximumNumberOfResults: number): Promise<UrlDbObject[]> {
         if (!this.isConnected()){ throw "Connect first to the database"}
         
         // get all the documents as an array:
@@ -96,7 +109,9 @@ class Database {
         return await cursor.toArray();
     }
 
-    async get_urls_by_user_id(user_id, maximumNumberOfResults) {
+    async get_urls_by_user_id(user_id:string | undefined, maximumNumberOfResults:number): Promise<UrlDbObject[]>{
+
+        if (user_id == "undefined"){throw new Error("You must specify a user_id to get the data")}
 
         // get all the documents as an array:
         const cursor = client.db('personal_db').collection("urlShortened")
@@ -110,4 +125,4 @@ class Database {
 
 }
 
-module.exports = Database
+export default Database

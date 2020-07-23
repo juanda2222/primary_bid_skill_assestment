@@ -29,4 +29,4 @@ class ConfigureServer {
     }
 }
 
-module.exports = ConfigureServer
+export default ConfigureServer

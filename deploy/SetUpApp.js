@@ -3,7 +3,7 @@
 const REGION = 'us-east-1'
 const CLUSTER_REPOSITORY_NAME = "eks-image-repository"
 
-var AWS = require('aws-sdk');
+var AWS = require('AwsCli');
 const path = require("path")
 const fs = require("fs")
 const util = require('util');

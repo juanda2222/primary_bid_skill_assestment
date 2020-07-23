@@ -1,15 +1,14 @@
-const express = require('express');
-const mongodb = require('mongodb');
-const path = require("path")
 
-const { v4: uuidv4 } = require('uuid');
+import {Express, secrets } from "../../types/ExpressTypes"
+import Database from "../../modules/Database.js"
 
-const Database = require("../../modules/Database.js")
+var express = require('express')
+var { v4: uuidv4 } = require('uuid');
 
 const router = express.Router();
 
 // Get URLs
-router.get('/', async (req, res) => {
+router.get('/', async (req:Express.Request, res:Express.Response) => {
   
   let url_list
   let byUser = req.query.byUser;
@@ -41,13 +40,21 @@ router.get('/', async (req, res) => {
 });
 
 // Add URL
-router.post('/', async (req, res) => {
+router.post('/', async (req:Express.Request, res:Express.Response)  => {
   
+  if (!req.session.user_id) {
+    res.status(500).send({ error: "Error, session user_id not defined" })
+    throw new Error("Error, session user_id not defined");
+  } else if (!req.body.url) {
+    res.status(500).send({ error: "Error, request body.url is not defined" })
+    throw new Error("Error, request body.url is not defined");
+  }
 
   // extract the part that uses the fastest digits of the time to create the url_id
   const url_id = uuidv4().substring(0, 8) 
 
   //check if the uuid is already present in a document (unlikely to happen)
+
 
   //save to the database the entry
   const database = await loadUrlDatabase(req.app.locals.secrets);
@@ -57,15 +64,16 @@ router.post('/', async (req, res) => {
 });
 
 // Delete URL
-router.delete('/:id', async (req, res) => {
+router.delete('/:id', async (req:Express.Request, res:Express.Response) => {
 
+  if(!req.params.id){return res.status(500).send({error: "Specify an id to delete"})}
   const database = await loadUrlDatabase(req.app.locals.secrets);
   await database.delete_url_entry(req.params.id);
   res.status(200).send({});
 
 });
 
-async function loadUrlDatabase(secrets) {
+async function loadUrlDatabase(secrets: secrets ): Promise<Database> {
 
   // initialize the manager and helper shared vars
   const database = new Database(secrets.db_user, secrets.db_password)
@@ -74,4 +82,4 @@ async function loadUrlDatabase(secrets) {
 
 }
 
-module.exports = router;
+export default router

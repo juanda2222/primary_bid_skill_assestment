@@ -2,27 +2,26 @@
 
 var path = require("path")
 var fs = require('fs');
-YAML = require('yamljs');
 
 // Load the AWS SDK for Node.js
-var AWS = require('aws-sdk');
+var AwsCli = require('aws-sdk');
 
 //constants
 const REGION = 'us-east-1'
 
 // Set the region
-AWS.config.update({ region: REGION });
+AwsCli.config.update({ region: REGION });
 
 // Create aws services objects
-let s3 = new AWS.S3({ apiVersion: '2006-03-01' });
-var cloudformation = new AWS.CloudFormation({ apiVersion: '2010-05-15' });
-var iam = new AWS.IAM({ apiVersion: '2010-05-08' });
+let s3 = new AwsCli.S3({ apiVersion: '2006-03-01' });
+var cloudformation = new AwsCli.CloudFormation({ apiVersion: '2010-05-15' });
+var iam = new AwsCli.IAM({ apiVersion: '2010-05-08' });
 
 
 class AwsAdmin {
 
     static async config_project() {
-        AWS.config.loadFromPath(path.resolve(__dirname + "/../../credentials/aws_config.json"));
+        AwsCli.config.loadFromPath(path.resolve(__dirname + "/../../credentials/aws_config.json"));
         return true
     }
 
@@ -151,10 +150,7 @@ if (module === require.main) {
     AwsAdmin.create_bucket("unique-testbucket-12345") //testing bucket
     let secrets_file_path = path.normalize(__dirname + "/../../credentials/secrets.json")
     AwsAdmin.upload_file(secrets_file_path, "personal-secret-files")
-    AwsAdmin.create_kubernetes_iam_role_with_policys()
-    AwsAdmin.create_kubernetes_vpn()
     
-
     // this are used as helper functions:
     //AwsAdmin.get_buckets_list()
     //AwsAdmin.delete_bucket(<BUCKET_NAME>)
