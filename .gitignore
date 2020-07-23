@@ -3,12 +3,12 @@
 node_modules
 credentials
 
+# all the build files
+build
 
 # front directory ignores:
 /front/node_modules
 
-# server directory ignores:
-/server/public
 
 
 # ------------------------------------------

@@ -3,11 +3,13 @@
 
 {
   "compilerOptions": {
+    
     "target": "es5",                          
     "module": "commonjs",                    
     "lib": ["es6"],                     
     "allowJs": true,                       
-    "rootDir": ".",
+    "rootDir": "./src",
+    "outDir": "build",
     "strict": true,         
     "noImplicitAny": true,
     "esModuleInterop": true,
@@ -16,12 +18,13 @@
   },
   "exclude": [
     "node_modules",
-    "front",
+    "src/front",
+    "src/server/public",
+    "src/tests",
     "deploy",
-    "credentials",
-    "server/public",
-    "tests",
     "build",
+    "jest.config.js",
     "**/*.spec.ts"
-  ]
+  ],
+  
 }

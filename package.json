@@ -5,11 +5,11 @@
   "main": "index.js",
   "scripts": {
     "test": "jest",
-    "start": "node ./server/index.js",
-    "dev_start": "node ./server/index.js -T",
-    "dev_back": "nodemon ./server/index.js",
-    "build": "cd front && yarn build && cd .. && tsc -b",
-    "dev_front": "cd front && yarn serve",
+    "start": "node ./build/server/index.js",
+    "dev_start": "node ./build/server/index.js -T",
+    "dev_back": "nodemon ./src/server/index.ts",
+    "build": "cd src/front && yarn build && cd ../.. && tsc -b",
+    "dev_front": "cd src/front && yarn serve",
     "dev": "./develop.bat"
   },
   "author": "Juan David",
@@ -27,9 +27,12 @@
     "yamljs": "^0.3.0"
   },
   "devDependencies": {
+    "@types/jest": "^26.0.6",
+    "@types/node": "^14.0.24",
     "axios": "^0.19.2",
     "jest": "^26.1.0",
     "nodemon": "^2.0.4",
+    "ts-jest": "^26.1.3",
     "ts-node": "^8.10.2",
     "typescript": "^3.9.7"
   }
