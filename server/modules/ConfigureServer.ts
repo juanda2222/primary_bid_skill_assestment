@@ -1,3 +1,4 @@
+import { app } from "../types/ExpressTypes"
 
 
 var AwsAdmin = require("./AwsAdmin.js")
@@ -6,7 +7,7 @@ var fs = require("fs")
 
 class ConfigureServer {
 
-    static async configureSecretFiles(app){
+    static async configureSecretFiles(app: app){
         
         let secrets_file_path = path.resolve(__dirname + "/../../credentials/secrets.json")
         let serialized_file
@@ -29,4 +30,5 @@ class ConfigureServer {
     }
 }
 
+module.exports = ConfigureServer
 export default ConfigureServer

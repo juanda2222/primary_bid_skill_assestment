@@ -6,13 +6,16 @@ interface secrets {
   user_id: string
 }
 
+interface app{
+  locals: {
+    secrets: secrets
+  }
+}
+
+
 declare namespace Express {
   export interface Request {
-    app: {
-      locals: {
-        secrets: secrets
-      }
-    },
+    app: app,
     url: string 
     body: {
       url?: string
@@ -37,6 +40,4 @@ declare namespace Express {
   }
 }
 
-
-
-export { Express, secrets}
+export { Express, secrets, app}

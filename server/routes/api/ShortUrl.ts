@@ -5,7 +5,7 @@ import Database from "../../modules/Database.js"
 var express = require('express')
 var { v4: uuidv4 } = require('uuid');
 
-const router = express.Router();
+var router = express.Router();
 
 // Get URLs
 router.get('/', async (req:Express.Request, res:Express.Response) => {
@@ -82,4 +82,5 @@ async function loadUrlDatabase(secrets: secrets ): Promise<Database> {
 
 }
 
+module.exports = router;
 export default router

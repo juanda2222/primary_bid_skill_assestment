@@ -6,12 +6,22 @@
     "target": "es5",                          
     "module": "commonjs",                    
     "lib": ["es6"],                     
-    "allowJs": true,
-    "outDir": "build",                          
+    "allowJs": true,                       
     "rootDir": ".",
     "strict": true,         
     "noImplicitAny": true,
     "esModuleInterop": true,
-    "resolveJsonModule": true
-  }
+    "resolveJsonModule": true,
+    "removeComments": true,
+  },
+  "exclude": [
+    "node_modules",
+    "front",
+    "deploy",
+    "credentials",
+    "server/public",
+    "tests",
+    "build",
+    "**/*.spec.ts"
+  ]
 }

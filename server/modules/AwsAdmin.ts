@@ -2,6 +2,7 @@
 
 var path = require("path")
 var fs = require('fs');
+import {AWSError} from 'aws-sdk/lib/error';
 
 // Load the AWS SDK for Node.js
 var AwsCli = require('aws-sdk');
@@ -30,7 +31,7 @@ class AwsAdmin {
         return new Promise((fulfill, reject) => {
 
             // Call S3 to list the buckets
-            s3.listBuckets(function (err, data) {
+            s3.listBuckets( (err:AWSError, data:any) => {
                 if (err) {
                     console.log("Error", err);
                     reject(`Error! ${err}`)
@@ -43,7 +44,7 @@ class AwsAdmin {
 
     }
 
-    static async create_bucket(bucket_name) {
+    static async create_bucket(bucket_name:string) {
 
         // Create the parameters for calling createBucket
         var bucketParams = {
@@ -53,7 +54,7 @@ class AwsAdmin {
         return new Promise((fulfill, reject) => {
 
             // call S3 to create the bucket
-            s3.createBucket(bucketParams, function (err, data) {
+            s3.createBucket(bucketParams, function (err:AWSError, data:any) {
                 if (err) {
                     console.log("Error", err);
                     reject(false)
@@ -65,7 +66,7 @@ class AwsAdmin {
         })
     }
 
-    static async delete_bucket(bucket_name) {
+    static async delete_bucket(bucket_name: string) {
 
         // Create params for S3.deleteBucket
         var bucketParams = {
@@ -74,7 +75,7 @@ class AwsAdmin {
 
         // Call S3 to delete the bucket
         return new Promise((fulfill, reject) => {
-            s3.deleteBucket(bucketParams, function (err, data) {
+            s3.deleteBucket(bucketParams, function (err:AWSError, data:any) {
                 if (err) {
                     console.log("Error", err);
                     reject(false)
@@ -86,7 +87,7 @@ class AwsAdmin {
         });
     }
 
-    static async upload_file(file_path, bucket_name) {
+    static async upload_file(file_path:string, bucket_name:string) {
 
 
         // call S3 to retrieve upload file to specified bucket
@@ -94,7 +95,7 @@ class AwsAdmin {
 
         // Configure the file stream and obtain the upload parameters
         var fileStream = fs.createReadStream(file_path);
-        fileStream.on('error', function (err) {
+        fileStream.on('error', (err:string) => {
             console.log('File Error', err);
         });
         uploadParams.Body = fileStream;
@@ -104,7 +105,7 @@ class AwsAdmin {
         // call S3 to retrieve upload file to specified bucket (return it as a promise)
         return new Promise((fulfill, reject) => {
 
-            s3.upload(uploadParams, function (err, data) {
+            s3.upload(uploadParams, (err:AWSError, data:any) => {
                 if (err) {
                     console.log("Error", err);
                     reject(false)
@@ -116,7 +117,7 @@ class AwsAdmin {
         })
     }
 
-    static async read_file_from_bucket(file_basename, bucket_name) {
+    static async read_file_from_bucket(file_basename:string, bucket_name:string) {
 
         // Create the parameters for calling listObjects
         var downloadParams = {
@@ -126,7 +127,7 @@ class AwsAdmin {
 
         return new Promise((fulfill, reject) => {
 
-            s3.getObject(downloadParams, function (err, data) {
+            s3.getObject(downloadParams, (err:AWSError, data:any) => {
                 if (err) {
                     console.log(err)
                     reject(err)

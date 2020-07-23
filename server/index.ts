@@ -10,12 +10,13 @@ var { v4: uuidv4 } = require('uuid');
 
 //configuration:
 import ConfigureServer from "./modules/ConfigureServer"
-var CorsConfig = require("./modules/CorsConfig.js")
-var ShortUrl = require('./routes/api/ShortUrl.ts');
+var CorsConfig = require("./modules/CorsConfig")
+var ShortUrl = require('./routes/api/ShortUrl');
 var app = express();
 
 //configure the app:
 ConfigureServer.configureSecretFiles(app)
+var router = express.Router();
 
 // Middleware
 var sesion_config = {
@@ -57,7 +58,7 @@ app.use(function (req:Express.Request, res:Express.Response, next:any) {
 // rutes
 app.use('/api/shorturl', ShortUrl);
 
-//process.env.NODE_ENV === 'test_production'
+if ((process.argv[2] == "-T") || (process.argv[2] == "--test")) {process.env.NODE_ENV = 'test_production'}
 
 // Handle production
 if ((process.env.NODE_ENV === 'production') || (process.env.NODE_ENV === 'test_production')){
@@ -79,3 +80,5 @@ if ((process.env.NODE_ENV === 'production') || (process.env.NODE_ENV === 'test_p
 //start server
 const port = process.env.PORT || 5000;
 app.listen(port, () => console.log(`Server started on port ${port}`));
+
+export default {} //required for typescript compatibility
