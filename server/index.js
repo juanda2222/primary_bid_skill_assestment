@@ -24,8 +24,8 @@ var sesion_config = {
   resave: false,
   saveUninitialized: true,
   cookie: {  
-    sameSite: (process.env.NODE_ENV === 'production'), 
-    secure: (process.env.NODE_ENV === 'production'),//while dev allow http
+    sameSite: false, // (process.env.NODE_ENV === 'production'), 
+    secure: false, // (process.env.NODE_ENV === 'production'), //while dev allow http
     maxAge: 120000 /* miliseconds */ 
   } 
 }

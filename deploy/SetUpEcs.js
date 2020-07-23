@@ -7,7 +7,6 @@ var fs = require('fs');
 var AWS = require('aws-sdk');
 
 //constants
-const KUBERNETES_VPN_STACK = "https://amazon-eks.s3.us-west-2.amazonaws.com/cloudformation/2020-06-10/amazon-eks-vpc-private-subnets.yaml"
 const REGION = 'us-east-1'
 
 
@@ -20,64 +19,79 @@ var cloudformation = new AWS.CloudFormation({ apiVersion: '2010-05-15' });
 
 class SetUpEks {
 
-    static async create_kubernetes_iam_role_with_policys() {
-
-        //----------------------------------------------------
-        // create the eKs iam_role with policys using a stack
-        //----------------------------------------------------
-
-        let iam_stack_path = path.resolve(__dirname + "/iam_stack.yaml")
-        let serialized_iam_stack_description = fs.readFileSync(iam_stack_path).toString()
-
-        var params = {
-            StackName: "eks-iam-stack", /* required */
-            TemplateBody: serialized_iam_stack_description,
-            Capabilities: ["CAPABILITY_IAM"]
-            //TimeoutInMinutes: '30', //time before the stack creation fails
-        };
-
-        await new Promise((fulfill, reject) => {
-            cloudformation.createStack(params, function (err, data) {
-                if (err) {
-                    console.log(err, err.stack); // an error occurred
-                    reject(err)
-                }else {
-                    console.log(data);           // successful response
-                    fulfill(data)
-                }
-            });
-        })
-
-        
-    }
-
     static async create_ecs_stack() {
 
         // --------------
-        // the VPN stack
+        // the Ecs stack
         //---------------
 
+        let cluster_stack_path = path.resolve(__dirname + "/cluster_stack.yaml")
+        let serialized_iam_stack_description = fs.readFileSync(cluster_stack_path).toString()
+
         var params = {
-            StackName: "eks-vpn-stack", /* required */
-            TemplateURL: KUBERNETES_VPN_STACK,
+            StackName: "ecs-cluster-stack", /* required */
+            TemplateBody: serialized_iam_stack_description,
             //TimeoutInMinutes: '30', //time before the stack creation fails
             Parameters: [
                 {
-                    ParameterKey: "VpcBlock",
-                    ParameterValue: "192.168.0.0/16"
+                    ParameterKey: "AsgMaxSize",
+                    ParameterValue: "1"
                 }, {
-                    ParameterKey: "PublicSubnet01Block",
-                    ParameterValue: "192.168.0.0/18"
+                    ParameterKey: "CreateElasticLoadBalancer",
+                    ParameterValue: "false"
                 }, {
-                    ParameterKey: "PublicSubnet02Block",
-                    ParameterValue: "192.168.64.0/18"
+                    ParameterKey: "EcsAmiId",
+                    ParameterValue: "ami-0d09143c6fc181fe3"
                 }, {
-                    ParameterKey: "PrivateSubnet01Block",
-                    ParameterValue: "192.168.128.0/18"
+                    ParameterKey: "EcsClusterName",
+                    ParameterValue: "personal-cluster"
                 }, {
-                    ParameterKey: "PrivateSubnet02Block",
-                    ParameterValue: "192.168.192.0/18"
+                    ParameterKey: "EcsEndpoint",
+                    ParameterValue: "-"
+                }, {
+                    ParameterKey: "EcsInstanceType",
+                    ParameterValue: "t2.micro"
+                }, {
+                    ParameterKey: "EcsPort",
+                    ParameterValue: "80"
+                }, {
+                    ParameterKey: "ElbHealthCheckTarget",
+                    ParameterValue: "HTTP:80/"
+                }, {
+                    ParameterKey: "ElbPort",
+                    ParameterValue: "80"
+                }, {
+                    ParameterKey: "IamRoleInstanceProfile",
+                    ParameterValue: "ecsInstanceRole"
+                }, {
+                    ParameterKey: "IsFargate",
+                    ParameterValue: "true"
+                }, {
+                    ParameterKey: "KeyName",
+                    ParameterValue: "-"
+                }, {
+                    ParameterKey: "SourceCidr",
+                    ParameterValue: "0.0.0.0/0"
+                }, {
+                    ParameterKey: "SubnetCidrBlock1",
+                    ParameterValue: "10.0.0.0/24"
+                }, {
+                    ParameterKey: "SubnetCidrBlock2",
+                    ParameterValue: "10.0.1.0/24"
+                }, {
+                    ParameterKey: "TargetGroupName",
+                    ParameterValue: "ECSFirstRunTargetGroup"
+                }, {
+                    ParameterKey: "TargetType",
+                    ParameterValue: "ip"
+                }, {
+                    ParameterKey: "VpcAvailabilityZones",
+                    ParameterValue: "us-east-1a,us-east-1b,us-east-1c,us-east-1d,us-east-1e,us-east-1f"
+                }, {
+                    ParameterKey: "VpcCidrBlock",
+                    ParameterValue: "10.0.0.0/16"
                 }
+
             ]
         };
 
@@ -100,9 +114,8 @@ class SetUpEks {
 if (module === require.main) {
 
     // this are only needed at the start to configure the project
-    SetUpEks.create_kubernetes_iam_role_with_policys()
-    SetUpEks.create_kubernetes_vpn()
-    console.log("Now wait for the network stack and the IAM stack to deploy")
+    SetUpEks.create_ecs_stack()
+    console.log("Now wait for the network stack to deploy")
     console.log(`https://console.aws.amazon.com/cloudformation/home?region=${REGION}#/stacks`)
     
 }

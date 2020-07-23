@@ -35,7 +35,7 @@ router.get('/', async (req, res) => {
     Timestamp: Date.now(),
     UrlList:formatted_urls,
   }
-  console.debug(response)
+  //console.debug(response)
   res.send(response);
 
 });
