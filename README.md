@@ -1,9 +1,9 @@
 # Express, Vue, Mongo and Aws fullstack url shortener
 
+![Recordit GIF](http://g.recordit.co/iRRnSTyLmI.gif)
+
 This is a template for a fullstack application using Express, Vue, Mongo and Aws. A running example is deployed in Aws but you can use it locally. Feel free to use the code and create a issue if you are having problems. 
-
-
-https://www.youtube.com/watch?v=fmFlAWtKnGA
+Live demo [here](ec2co-ecsel-xjcuiqrb42di-1967177933.us-east-1.elb.amazonaws.com) 
 
 ## Local quickstart
 
@@ -35,26 +35,41 @@ yarn dev
 ## AWS Set up
 
 To set up your aws enviroment you need to have:
+
 > Aws client tool --> latest (Authenticated)
 > Docker tools --> latest
+> Create a Kubernetes cluster from aws console: https://docs.aws.amazon.com/eks/latest/userguide/getting-started-console.html
 
 ```bash
 
-# Install dependencies
-yarn add all
+# Set up a stack in the cloud with:
+node ./deploy/SetUpEcs.js
 
-# Start Express Server: http://localhost:5000
-# And vue Server: http://localhost:8080
-yarn dev_lin | yarn dev_win
+###########################################################
+##          check the progress of your stack here:       ##
+##     https://console.aws.amazon.com/cloudformation/    ##
+##  don't run the next command until the stack is done   ##
+###########################################################
 
-# go to http://localhost:8080 to use the app
+# Prepare your docker credentials
+node ./deploy/SetUpApp.js
 ```
 
+## Publish new version
 
-## App Info
+```bash
 
-> Create a Kubernetes cluster from aws console: https://docs.aws.amazon.com/eks/latest/userguide/getting-started-console.html
-> Create a Kubernetes cluster from aws console: https://docs.aws.amazon.com/eks/latest/userguide/getting-started-console.html
+# build the front static files and the backend js from typescript
+yarn build
+
+# build ad publish to the aws repo
+node ./deploy/DeployApp.js
+```
+
+### About the App
+
+Keep it responsive!
+![Recordit GIF](http://g.recordit.co/zh07F8Lx1B.gif)
 
 
 ### Author
@@ -68,5 +83,7 @@ Juan David Ramirez
 
 ### License
 
-This project is licensed under the MIT License
+[![License](http://img.shields.io/:license-mit-blue.svg?style=flat-square)](http://badges.mit-license.org)
 
+- **[MIT license](http://opensource.org/licenses/mit-license.php)**
+- Copyright 2015 © <a href="http://fvcproductions.com" target="_blank">FVCproductions</a>.
