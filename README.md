@@ -14,9 +14,9 @@ To test the applicattion localy set up the following tools:
 > A credentials folder on the root project with the following format:
 ```json
 {
-  "db_user":"your mongod DATABASE user", //diferent from the credentials to acces the cloud.mongo page
+  "db_user":"your mongod DATABASE user (diferent from the credentials to acces the cloud.mongo page)",
   "db_password":"your mongodb DATABASE password",
-  "user_id":"Your aws iam user number. Ej: 394372858669" //This is OPTIONAL if you only want to deploy localy
+  "user_id":"Your aws iam user number. Ej: 394372858669 (This is OPTIONAL if you just want to deploy locally)"
 }
 ```
 > Run the local enviroment:
@@ -76,6 +76,7 @@ Keep it responsive!
 
 Juan David Ramirez
 [Portfolio](https://david.alfagenos.com)
+You can always donate me [here](https://david.alfagenos.com/donate)
 
 ### Version
 
