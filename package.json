@@ -10,7 +10,8 @@
     "dev_back": "nodemon ./src/server/index.ts",
     "build": "cd src/front && yarn build && cd ../.. && tsc -b",
     "dev_front": "cd src/front && yarn serve",
-    "dev": "./develop.bat"
+    "dev_win": "./develop.bat",
+    "dev_lin": "./develop.sh"
   },
   "author": "Juan David",
   "license": "MIT",

@@ -1,41 +1,66 @@
-# Microposts
+# Express, Vue, Mongo and Aws fullstack url shortener
 
-> Example of a fullstack app using Vue.js, Express and MongoDB. You will need to edit the MongoDB connection string in server/routes/api/posts.js to your own.
+This is a template for a fullstack application using Express, Vue, Mongo and Aws. A running example is deployed in Aws but you can use it locally. Feel free to use the code and create a issue if you are having problems. 
 
-> Create a Kubernetes cluster from aws console: https://docs.aws.amazon.com/eks/latest/userguide/getting-started-console.html
 
 https://www.youtube.com/watch?v=fmFlAWtKnGA
 
-## Quick Start
+## Local quickstart
 
+To test the applicattion localy set up the following tools:
+> node -version >= v12
+> yarn -version >= 1.2
+> Mongo Altasian account with your local ip whitelisted [here](https://cloud.mongodb.com/)
+> A credentials folder on the root project with the following format:
+```json
+{
+  "db_user":"your mongod DATABASE user", //diferent from the credentials to acces the cloud.mongo page
+  "db_password":"your mongodb DATABASE password",
+  "user_id":"Your aws iam user number. Ej: 394372858669" //This is OPTIONAL if you only want to deploy localy
+}
+```
+> Run the local enviroment:
 ```bash
-# install aws client
-
-# Install kubectl command line tool
-
-# install docker
 
 # Install dependencies
-npm install
+yarn add all
 
 # Start Express Server: http://localhost:5000
-npm start
+# And vue Server: http://localhost:8080
+yarn dev
 
-# Start Vue DevServer: http://localhost:8080
-cd client
-npm run serve
-
-# Build for production (Will build into server/public, ready for deployment)
-cd client
-npm run build
+# go to http://localhost:8080 to use the app
 ```
+
+## AWS Set up
+
+To set up your aws enviroment you need to have:
+> Aws client tool --> latest (Authenticated)
+> Docker tools --> latest
+
+```bash
+
+# Install dependencies
+yarn add all
+
+# Start Express Server: http://localhost:5000
+# And vue Server: http://localhost:8080
+yarn dev_lin | yarn dev_win
+
+# go to http://localhost:8080 to use the app
+```
+
 
 ## App Info
 
+> Create a Kubernetes cluster from aws console: https://docs.aws.amazon.com/eks/latest/userguide/getting-started-console.html
+> Create a Kubernetes cluster from aws console: https://docs.aws.amazon.com/eks/latest/userguide/getting-started-console.html
+
+
 ### Author
 
-Brad Traversy
-[Traversy Media](http://www.traversymedia.com)
+Juan David Ramirez
+[Portfolio](https://david.alfagenos.com)
 
 ### Version
 
@@ -45,38 +70,3 @@ Brad Traversy
 
 This project is licensed under the MIT License
 
-
-#the css used in the video
-div.container {
-  max-width: 800px;
-  margin: 0 auto;
-}
-
-p.error {
-  border: 1px solid #ff5b5f;
-  background-color: #ffc5c1;
-  padding: 10px;
-  margin-bottom: 15px;
-}
-
-div.post {
-  position: relative;
-  border: 1px solid #5bd658;
-  background-color: 3bcffb8;
-  padding: 10px 10px 30px 10px;
-  margin-bottom: 15px;
-}
-
-div.created-at {
-  position: absolute;
-  top: 0;
-  left: 0;
-  padding: 5px 15px 5px 15px;
-  background-color: darkgreen;
-}
-
-p.text {
-  font-size: 22px;
-  font-weight: 700;
-  margin-bottom: 0;
-}
