@@ -15,7 +15,7 @@ var ShortUrl = require('./routes/api/ShortUrl');
 var app = express();
 
 //configure the app:
-ConfigureServer.configureSecretFiles(app)
+var isConfigured = ConfigureServer.configureSecretFiles(app)
 var router = express.Router();
 
 // Middleware
@@ -38,7 +38,10 @@ app.use(express.json());
 app.use(cors(CorsConfig));
 
 //on any request:
-app.use(function (req:Express.Request, res:Express.Response, next:any) {
+app.use(async function (req:Express.Request, res:Express.Response, next:any) {
+  
+  await isConfigured;
+
   if (!req.session) {
     return next(new Error('Session not defined')) // handle error
   }
