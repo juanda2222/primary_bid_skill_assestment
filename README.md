@@ -3,7 +3,7 @@
 ![Recordit GIF](http://g.recordit.co/iRRnSTyLmI.gif)
 
 This is a template for a fullstack application using Express, Vue, Mongo and Aws. A running example is deployed in Aws but you can use it locally. Feel free to use the code and create a issue if you are having problems. 
-Live demo [here](ec2co-ecsel-xjcuiqrb42di-1967177933.us-east-1.elb.amazonaws.com) 
+Live demo: [load balancer](ec2co-ecsel-xjcuiqrb42di-1967177933.us-east-1.elb.amazonaws.com) [Container instance](http://34.205.141.209/) 
 
 ## Local quickstart
 
